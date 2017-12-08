@@ -30,6 +30,7 @@ syntax on
 
 set backupskip=/tmp/*,/private/tmp/*
 set number
+set cursorline
 noremap <C-a> ^
 noremap <C-e> $
 noremap <Space> :<C-u>VimwikiToggleListItem<CR>
