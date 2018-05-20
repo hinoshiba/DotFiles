@@ -52,4 +52,4 @@ if &term !~ "xterm-color"
 	autocmd BufEnter * if bufname("") !~ "^?[A-Za-z0-9?]*://" | silent! exe '!echo -n "^[k[`basename %`]^[??"' | endif
 	autocmd VimLeave * silent! exe '!echo -n "^[k`dirs`^[??"'
 endif
-
+colorscheme blue
