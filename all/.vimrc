@@ -12,31 +12,36 @@ let g:neobundle_default_git_protocol='https'
 NeoBundleFetch 'Shougo/neobundle.vim'
 NeoBundle 'nanotech/jellybeans.vim'
 NeoBundleCheck
-NeoBundle 'vimwiki'
-NeoBundle 'itchyny/calendar.vim'
-NeoBundle 'vim-scripts/VOoM'
 NeoBundle 'scrooloose/nerdtree'
-NeoBundle 'mattn/vim-metarw-redmine'
-NeoBundle 'kana/vim-metarw'
 NeoBundle 'nathanaelkane/vim-indent-guides'
-NeoBundle 'vim-scripts/AnsiEsc.vim'
 NeoBundle 'bronson/vim-trailing-whitespace'
-NeoBundle 'tpope/vim-fugitive'
+NeoBundle 'mmai/vim-markdown-wiki'
 call neobundle#end()
 
 filetype plugin indent on
-" set t_Co=256
+set t_Co=256
 syntax on
 
+set cursorline
 set backupskip=/tmp/*,/private/tmp/*
 set number
-set cursorline
+set syntax=markdown
+set foldmethod=marker
+set cursorcolumn
+"set expandtab
+set tabstop=4
+set shiftwidth=4
+set list
+set listchars=tab:»-,trail:-,eol:↲,extends:»,precedes:«,nbsp:%
+
+au BufRead,BufNewFile *.md set filetype=markdown
 noremap <C-a> ^
 noremap <C-e> $
-noremap <Space> :<C-u>VimwikiToggleListItem<CR>
 nnoremap <silent><C-e> :NERDTreeToggle<CR>
+nnoremap <BS> :MdwiReturn<CR>
 let g:indent_guides_enable_on_vim_startup = 1
-
+"colorscheme blue
+colorscheme murphy
 function! ZenkakuSpace()
 	highlight ZenkakuSpace cterm=underline ctermfg=lightblue guibg=darkgray
 endfunction
@@ -52,4 +57,19 @@ if &term !~ "xterm-color"
 	autocmd BufEnter * if bufname("") !~ "^?[A-Za-z0-9?]*://" | silent! exe '!echo -n "^[k[`basename %`]^[??"' | endif
 	autocmd VimLeave * silent! exe '!echo -n "^[k`dirs`^[??"'
 endif
-colorscheme blue
+:let g:vimwiki_list = [{'path':'~/git/', 'index':'links.wiki'}]
+
+function s:MkNonExDir(file, buf)
+    if empty(getbufvar(a:buf, '&buftype')) && a:file!~#'\v^\w+\:\/'
+        let dir=fnamemodify(a:file, ':h')
+        if !isdirectory(dir)
+            call mkdir(dir, 'p')
+        endif
+    endif
+endfunction
+augroup BWCCreateDir
+    autocmd!
+    autocmd BufWritePre * :call s:MkNonExDir(expand('<afile>'), +expand('<abuf>'))
+augroup END
+
+execute "set colorcolumn=" . join(range(81, 9999), ',')
