@@ -41,7 +41,8 @@ nnoremap <silent><C-e> :NERDTreeToggle<CR>
 nnoremap <BS> :MdwiReturn<CR>
 let g:indent_guides_enable_on_vim_startup = 1
 "colorscheme blue
-colorscheme murphy
+"colorscheme murphy
+colorscheme industry
 function! ZenkakuSpace()
 	highlight ZenkakuSpace cterm=underline ctermfg=lightblue guibg=darkgray
 endfunction
@@ -73,3 +74,4 @@ augroup BWCCreateDir
 augroup END
 
 execute "set colorcolumn=" . join(range(81, 9999), ',')
+hi ColorColumn ctermbg=90 guibg=#2f4f4f
